@@ -2,8 +2,12 @@ const express = require("express");
 const low = require("lowdb");
 const FileSync = require("lowdb/adapters/FileSync");
 
+const bodyParser = require('body-parser');
+
 const app = express();
 const port = 3000;  
+  
+const myMiddleware = require('./middleware/corsMiddleware');
 
 const adapter = new FileSync("db.json");
 const db = low(adapter);
@@ -11,6 +15,7 @@ const db = low(adapter);
 db.defaults({ records: [] }).write(); 
 app.use(express.json());
 
+app.use(myMiddleware);
 
 app.get("/api/records", (req, res) => {
   const records = db.get("records").value();
@@ -35,3 +40,5 @@ const read = () => {
 };
 
 read();
+
+// git commit -m " bebebe-jsjjs "
